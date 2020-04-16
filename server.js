@@ -6,6 +6,7 @@ const bodyParser = require('body-parser');
 const cors = require('cors');
 const logger = require('morgan')
 
+const route = require('./src/routers/')
 
 app.use(bodyParser.urlencoded({extended: false}))
 app.use(bodyParser.json())
@@ -13,10 +14,6 @@ app.use(cors())
 app.use(logger('dev'))
 app.use('/api/v1', route);
 
-
-app.use('/',(req, res)=>{
-  res.send('hello word')
-})
 app.listen(port, ()=>{
   console.log(`App Listen port ${port}`);
 })
