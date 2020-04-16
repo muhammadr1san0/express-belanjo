@@ -35,4 +35,15 @@ module.exports = {
       }
     })
   },
+  insertProduct: (data)=>{
+    return new Promise((resolve, reject)=>{
+      connection.query('INSERT INTO products SET ?', data, (err, result)=>{
+        if(!err){
+          resolve(result)
+        }else{
+          reject(err)
+        }
+      })
+    })
+  }
 }
