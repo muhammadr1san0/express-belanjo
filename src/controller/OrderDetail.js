@@ -21,18 +21,11 @@ module.exports = {
       })
   },
   insertOrderDetail: (req, res) => {
-    const { user_id, shipping_price, order_price, total_price, address_delivery, city_delivery, province_delivery, phone_delivery, status, finished_order_date } = req.body;
+    const { order_id, product_id, quantity } = req.body;
     const data = {
-      user_id,
-      shipping_price,
-      order_price,
-      total_price,
-      address_delivery,
-      city_delivery,
-      province_delivery,
-      phone_delivery,
-      status,
-      finished_order_date
+      order_id,
+      product_id,
+      quantity
     }
     ModelOrderDetail.insertOrderDetail(data)
       .then((result) => {
@@ -43,22 +36,14 @@ module.exports = {
       })
   },
   updateOrderDetail: (req, res) => {
-    const { user_id, shipping_price, order_price, total_price, address_delivery, city_delivery, province_delivery, phone_delivery, status, finished_order_date } = req.body;
-    const id_order = req.params.id_order
+    const { order_id, product_id, quantity } = req.body;
+    const id_orderdetail = req.params.id_orderdetail
     const data = {
-      user_id,
-      shipping_price,
-      order_price,
-      total_price,
-      address_delivery,
-      city_delivery,
-      province_delivery,
-      phone_delivery,
-      status,
-      finished_order_date,
-      updated_at: new Date()
+      order_id,
+      product_id,
+      quantity
     }
-    ModelOrderDetail.updateOrderDetail(id_order, data)
+    ModelOrderDetail.updateOrderDetail(id_orderdetail, data)
       .then((result) => {
         MiscHelper.response(res, result, 200, req.newToken ? req.newToken : false)
       })
