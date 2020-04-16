@@ -10,6 +10,16 @@ module.exports = {
       console.log(err)
     })
   },
+  getProductById: (req, res) => {
+    const id_product = req.params.id_product
+    productModel.getProductById(id_product)
+      .then((result) => {
+        MiscHelper.response(res, result, 200, req.newToken ? req.newToken : false)
+      })
+      .catch((err) => {
+        console.log(err)
+      })
+  },
   getProduct:(req,res) =>{
     const search = req.query.search
     const page = req.query.page

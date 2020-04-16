@@ -12,6 +12,17 @@ module.exports = {
       })
     })
   },
+  getProductById: (id_product) => {
+    return new Promise((resolve, reject) => {
+      connection.query("SELECT * FROM products WHERE id = ?", id_product, (err, result) => {
+        if (!err) {
+          resolve(result)
+        } else {
+          reject(new Error(err))
+        }
+      })
+    })
+  },
   getProduct: (page, search, sort) => {
     return new Promise((resolve, reject) => {
       if(page){

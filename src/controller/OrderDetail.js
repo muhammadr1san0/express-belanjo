@@ -1,8 +1,8 @@
-const ModelCategory = require('../models/CategoryProduct');
+const ModelOrderDetail = require('../models/OrderDetail');
 const MiscHelper = require('../helpers/Helper');
 module.exports = {
-  getAllCategory: (req, res) => {
-    ModelCategory.getAllOrder()
+  getAllOrderDetail: (req, res) => {
+    ModelOrderDetail.getAllOrderDetail()
       .then((result) => {
         MiscHelper.response(res, result, 200, req.newToken ? req.newToken : false)
       })
@@ -10,9 +10,9 @@ module.exports = {
         console.log(err)
       })
   },
-  getCategoryById: (req, res) => {
+  getOrderDetailById: (req, res) => {
     const id_order = req.params.id_order
-    ModelCategory.getOrderById(id_order)
+    ModelOrderDetail.getOrderDetailById(id_order)
       .then((result) => {
         MiscHelper.response(res, result, 200, req.newToken ? req.newToken : false)
       })
@@ -20,7 +20,7 @@ module.exports = {
         console.log(err)
       })
   },
-  insertCategory: (req, res) => {
+  insertOrderDetail: (req, res) => {
     const { user_id, shipping_price, order_price, total_price, address_delivery, city_delivery, province_delivery, phone_delivery, status, finished_order_date } = req.body;
     const data = {
       user_id,
@@ -34,7 +34,7 @@ module.exports = {
       status,
       finished_order_date
     }
-    ModelCategory.insertCategory(data)
+    ModelOrderDetail.insertOrderDetail(data)
       .then((result) => {
         MiscHelper.response(res, result, 200, req.newToken ? req.newToken : false)
       })
@@ -42,7 +42,7 @@ module.exports = {
         console.log(err)
       })
   },
-  updateCategory: (req, res) => {
+  updateOrderDetail: (req, res) => {
     const { user_id, shipping_price, order_price, total_price, address_delivery, city_delivery, province_delivery, phone_delivery, status, finished_order_date } = req.body;
     const id_order = req.params.id_order
     const data = {
@@ -58,7 +58,7 @@ module.exports = {
       finished_order_date,
       updated_at: new Date()
     }
-    ModelCategory.updateCategory(id_order, data)
+    ModelOrderDetail.updateOrderDetail(id_order, data)
       .then((result) => {
         MiscHelper.response(res, result, 200, req.newToken ? req.newToken : false)
       })
@@ -66,9 +66,9 @@ module.exports = {
         console.log(err)
       })
   },
-  deleteCategory: (req, res) => {
-    const id_category = req.params.id_category
-    ModelCategory.deleteCategory(id_category)
+  deleteOrderDetail: (req, res) => {
+    const id_order = req.params.id_order
+    ModelOrderDetail.deleteOrderDetail(id_order)
       .then((result) => {
         MiscHelper.response(res, result, 200, req.newToken ? req.newToken : false)
       })
