@@ -21,18 +21,9 @@ module.exports = {
       })
   },
   insertCategory: (req, res) => {
-    const { user_id, shipping_price, order_price, total_price, address_delivery, city_delivery, province_delivery, phone_delivery, status, finished_order_date } = req.body;
+    const { name_category } = req.body;
     const data = {
-      user_id,
-      shipping_price,
-      order_price,
-      total_price,
-      address_delivery,
-      city_delivery,
-      province_delivery,
-      phone_delivery,
-      status,
-      finished_order_date
+      name_category
     }
     ModelCategory.insertCategory(data)
       .then((result) => {
@@ -43,22 +34,12 @@ module.exports = {
       })
   },
   updateCategory: (req, res) => {
-    const { user_id, shipping_price, order_price, total_price, address_delivery, city_delivery, province_delivery, phone_delivery, status, finished_order_date } = req.body;
-    const id_order = req.params.id_order
+    const { name_category } = req.body;
+    const id_category = req.params.id_category
     const data = {
-      user_id,
-      shipping_price,
-      order_price,
-      total_price,
-      address_delivery,
-      city_delivery,
-      province_delivery,
-      phone_delivery,
-      status,
-      finished_order_date,
-      updated_at: new Date()
+      name_category
     }
-    ModelCategory.updateCategory(id_order, data)
+    ModelCategory.updateCategory(id_category, data)
       .then((result) => {
         MiscHelper.response(res, result, 200, req.newToken ? req.newToken : false)
       })
