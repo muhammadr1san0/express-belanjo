@@ -22,5 +22,16 @@ module.exports = {
         }
       })
     })
+  },
+  editUserById:(id_user, data)=>{
+    return new Promise((resolve, reject)=>{
+      connection.query('UPDATE users SET ? WHERE id_user = ?',[data, id_user], (err, result)=>{
+        if(!err) {
+          resolve(result)
+        }else{
+          reject(new Error(err))
+        }
+      })
+    })
   }
 }

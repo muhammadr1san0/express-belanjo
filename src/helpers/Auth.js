@@ -19,5 +19,14 @@ module.exports = {
         reject(err)
       })
     }) 
+  },
+  authInfo: (req, res, next) => {
+    const headerAuth = req.headers['authorization']
+    const allowedAcces = process.env.REQUEST_HEADERS
+    if (headerAuth === allowedAcces){
+      next()
+    }else{
+      return MiscHelper.response(res, { message: 'Unauthorized, Need access token !'}, 401, true)
+    }
   }
 }

@@ -5,8 +5,17 @@ const userModels = require('../models/User');
 const uuidv4 = require('uuid').v4
 
 module.exports = {
-  register: (req, res) => {
+  register: async (req, res) => {
     const {phone_number, password, fullname} = req.body;
+    let user = [];
+    try {
+      user = await userModels.getUserPhoneNumber(phone_number)
+    } catch (error) {
+      console.log(error)
+    }
+    if (user.length>0){
+      return MiscHelper.response(res,{message: 'User sudah terdaftar' }, 403, true)
+    }
     Auth.hashPassword(password)
     // console.log(uuidv4())
     .then((res_password)=>{
@@ -20,6 +29,7 @@ module.exports = {
         address: '',
         provinsi: '',
         city: '',
+        token: '',
       }
       userModels.register(data)
       .then((response)=>{
@@ -38,12 +48,14 @@ module.exports = {
       const user = responseUser[0];
       Auth.verifyPassword(password, user.password)
       .then((responseVerify)=>{
-        if (responseVerify){
-          delete user.password;
-          MiscHelper.response(res, user, 200)
-        }else{
-          MiscHelper.response(res, {message: 'password anda salah'}, 403, true)
+        console.log(responseVerify)
+        if (!responseVerify){
+          return MiscHelper.response(res, {message: 'password anda salah'}, 403, true)
         }
+        delete user.password;
+        user.token = jwt.sign({ id_user: user.id_user, xxpnxx: user.phone_number }, process.env.SECRET_KEY, { expiresIn: '2 days' } )
+        userModels.editUserById(user.id_user, {token:user.token})
+        MiscHelper.response(res, user, 200)
       })
       .catch(err=> console.log(err))
     })
