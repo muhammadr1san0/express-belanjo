@@ -14,7 +14,7 @@ module.exports = {
       console.log(error)
     }
     if (user.length>0){
-      return MiscHelper.response(res,{message: 'User sudah terdaftar' }, 403, true)
+      return MiscHelper.response(res, { message: 'User sudah terdaftar' }, 403, true, req.newToken ? req.newToken : false)
     }
     Auth.hashPassword(password)
     // console.log(uuidv4())
@@ -33,7 +33,7 @@ module.exports = {
       }
       userModels.register(data)
       .then((response)=>{
-        MiscHelper.response(res,response, 201)
+        MiscHelper.response(res, response, 201, req.newToken ? req.newToken: false)
       })
       
     })
@@ -53,7 +53,7 @@ module.exports = {
           return MiscHelper.response(res, {message: 'password anda salah'}, 403, true)
         }
         delete user.password;
-        user.token = jwt.sign({ id_user: user.id_user, xxpnxx: user.phone_number }, process.env.SECRET_KEY, { expiresIn: '2 days' } )
+        user.token = jwt.sign({ id_user: user.id_user, xxpnxx: user.phone_number }, process.env.SECRET_KEY, { expiresIn: '1m' } )
         userModels.editUserById(user.id_user, {token:user.token})
         MiscHelper.response(res, user, 200)
       })

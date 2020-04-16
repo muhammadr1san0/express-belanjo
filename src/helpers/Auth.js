@@ -1,4 +1,8 @@
 const bcrypt = require('bcrypt');
+const jwt = require('jsonwebtoken')
+const MiscHelper = require('./Helper')
+const NewToken = require('./NewToken')
+
 module.exports = {
   hashPassword: (password) => {
     return new Promise((resolve, reject)=>{
@@ -26,7 +30,37 @@ module.exports = {
     if (headerAuth === allowedAcces){
       next()
     }else{
-      return MiscHelper.response(res, { message: 'Unauthorized, Need access token !'}, 401, true)
+      return MiscHelper.response(res, { message: 'Unauthorized, Need access request headers'}, 401, true)
     }
+  },
+  accessToken: (req, res, next) => {
+    const secretKey = process.env.SECRET_KEY;
+    const accessToken = req.headers['xxx-access-token']
+    if (!accessToken){
+      return MiscHelper.response(res, { message: 'Unauthorized, Need authentikasi T' }, 401, true)
+    }
+    const token = accessToken.split(' ')[1]
+    console.log(token)
+    jwt.verify(token, secretKey, (err, decoded)=>{
+     if(err){
+       if (err.name === 'JsonWebTokenError'){
+         return MiscHelper.response(res, null, 401, 'Invalid Token')
+       } else if (err.name === 'TokenExpiredError'){
+         NewToken.refreshToken(token)
+         .then((resToken)=>{
+          req.newToken = resToken
+           
+          next();
+         })
+         .catch((errToken)=>{
+           return MiscHelper.response(res, null, 401, 'Invalid Token Signin again')
+         })
+       }
+     }else{
+       console.log(decoded)
+       next();
+     }
+    })
   }
+
 }
