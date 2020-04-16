@@ -45,5 +45,27 @@ module.exports = {
         }
       })
     })
+  },
+  updateProduct: (id_product, data) => {
+    return new Promise((resolve, reject) => {
+      connection.query('UPDATE products SET ? WHERE id = ?', [data, id_product], (err, result) => {
+        if (!err) {
+          resolve(result)
+        } else {
+          reject(err)
+        }
+      })
+    })
+  },
+  deleteProduct: (data) => {
+    return new Promise((resolve, reject) => {
+      connection.query('DELETE FROM products WHERE id = ?', data, (err, result) => {
+        if (!err) {
+          resolve(result)
+        } else {
+          reject(err)
+        }
+      })
+    })
   }
 }
